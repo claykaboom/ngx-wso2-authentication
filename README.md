@@ -1,6 +1,62 @@
-# Wso2Authentication
+# Wso2 Authentication
 
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 7.3.5.
+
+This is a component that aims on smoothen the oAuth authentication flow with WSO2. 
+
+Component's name is: **NgxWso2Authentication**  (Camel Case Naming Standard)
+
+It can be placed on a private repository if need be. Currently it is available for use from  https://www.npmjs.com/package/ngx-wso2-authentication
+
+## Usage
+
+### Access Denied Screen
+
+The route `access-denied` needs to exist on yout angular application, and the component `AccessDeniedComponent` also needs to be referenced by your application on the routes file (```app-routing.module.ts```):
+
+```
+...
+import { LoginComponent, NgxWso2AuthenticationGuard, AccessDeniedComponent } from 'ngx-wso2-authentication';
+...
+
+const routes: Routes = [ 
+  { path: '', component: HomeComponent, canActivate: [NgxWso2AuthenticationGuard]  }, 
+  { path: 'access-denied', component: AccessDeniedComponent }
+];
+
+...
+
+```
+
+### Import the login component
+
+It is good to import the login component to your application, because it verifies if the authCode came from WSO2 and calls the ```login```nethod that will ultimately call the needed WSO2 endpoints
+
+### Has Role (ngxHasRole)
+
+The component allows certain visual components to be displayed in case the specified user has the needed roles to see it. It is needed to use single quotes ```'``` around the role name. **And only one role is accepted**, for example:
+
+```
+<div [ngxHasRole]="'Admin'" >
+   CONTENT
+</div>
+```
+
+
+
+## Technical Info about the Component
+
+### Building the component
+
+```
+ng build NgxWso2Authentication
+```
+
+### Live Building for the development phase (similar to ng serve)
+
+```
+ng build NgxWso2Authentication --watch
+```
 
 ## Development server
 
