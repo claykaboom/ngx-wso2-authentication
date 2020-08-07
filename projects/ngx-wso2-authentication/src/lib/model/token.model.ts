@@ -3,4 +3,5 @@ export interface NgxWso2Token {
   expires_in?: number;
   refresh_token?: string;
   expires_date?: Date;
+  current_page?: string;
 }

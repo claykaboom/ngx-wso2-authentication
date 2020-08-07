@@ -39,6 +39,7 @@ export interface NgxWso2Config {
   clientSecret: string;
   tokenUri: string;
   userDataUri?: string;
+  autoRedirectToOrigin?: boolean;
 }
 
 @NgModule({

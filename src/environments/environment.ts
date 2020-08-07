@@ -5,13 +5,14 @@
 export const environment = {
   production: false,
   wso2: {
-    authorizeUri: '',
-    clientId: '',
+    authorizeUri: 'https://api.integration.prod.aws.scania.com/oauth2/authorize',
+    clientId: 'SR_cQfSewt9wzi2L7Z0Io63NhzMa',
     redirectUri: 'http://localhost:4200/#/login',
-    storageName: 'Wso2AuthenticationToken',
-    clientSecret: '',
-    tokenUri: '',
-    userDataUri: ''
+    storageName: 'DevCommunity-Universe-Key',
+    clientSecret: 'QIP8GLYJ6x3NTW9IdOQxKDjmnsIa',
+    tokenUri: 'https://api.integration.prod.aws.scania.com/token/v1',
+    userDataUri: 'https://api.integration.prod.aws.scania.com/DevCommunityUniverse/v1/user',
+    autoRedirectToOrigin: true
   }
 };
 

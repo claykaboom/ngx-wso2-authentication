@@ -16,7 +16,10 @@ export class NgxWso2AuthenticationService {
 
   constructor(@Inject(WSO2_CONFIG) private config: NgxWso2Config,
     private http: HttpClient,
-    private router: Router) { }
+     private router: Router
+    // private pageAboutComponent: AboutComponent
+    ) { }
+
 
   /// Returns access token as object
   private get tokenStorage(): NgxWso2Token {
@@ -44,6 +47,9 @@ export class NgxWso2AuthenticationService {
     const sysdate = new Date();
     sysdate.setSeconds(sysdate.getSeconds() + ((token.expires_in - 10) || 120));
     token.expires_date = sysdate;
+    // if (localStorage.getItem('currentPage') != null) {
+    //   token.current_page = localStorage.getItem('currentPage');
+    // }
     localStorage.setItem(this.config.storageName, JSON.stringify(token));
   }
 
@@ -51,6 +57,14 @@ export class NgxWso2AuthenticationService {
   public get accessToken(): string | undefined {
     if (this.tokenStorage) {
       return this.tokenStorage.access_token;
+    }
+    return undefined;
+  }
+
+  /// Returns redirectPageAfterLogin
+  public get redirectPageAfterLogin(): string | undefined {
+    if (localStorage.getItem('redirectPageAfterLogin')) {
+      return localStorage.getItem('redirectPageAfterLogin');
     }
     return undefined;
   }
@@ -91,6 +105,7 @@ export class NgxWso2AuthenticationService {
   /// Delete token from local storage
   public logout(): void {
     localStorage.removeItem(this.config.storageName);
+    localStorage.removeItem('redirectPageAfterLogin');
   }
 
   /// Redirects back to the login page
@@ -113,8 +128,7 @@ export class NgxWso2AuthenticationService {
       .http
       // tslint:disable-next-line: object-literal-shorthand
       .post<NgxWso2Token>(this.config.tokenUri, body, { headers: headers })
-      .pipe(retry(3))
-
+      .pipe(retry(3));
   }
 
   /// Check if token is expired

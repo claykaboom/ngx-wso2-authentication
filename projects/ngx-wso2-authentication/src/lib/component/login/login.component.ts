@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ɵConsole } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { NgxWso2AuthenticationService } from '../../service/authentication.service';
 
@@ -37,7 +37,15 @@ export class LoginComponent implements OnInit {
         .then(() => {
           this.authService.GetUserData()
             .then(() => {
-              this.router.navigate(['/']);
+              if (this.authService.redirectPageAfterLogin) {
+               var redirectPage = this.authService.redirectPageAfterLogin;
+               localStorage.removeItem('redirectPageAfterLogin');
+               this.router.navigate([redirectPage]);
+              }
+              else{
+                console.log('B');
+                this.router.navigate(['/']);
+              }
             });
         });
     } else {

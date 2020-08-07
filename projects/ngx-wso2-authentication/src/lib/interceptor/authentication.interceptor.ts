@@ -19,7 +19,6 @@ export class NgxWso2HttpInterceptor implements HttpInterceptor {
     if (req.url === this.config.tokenUri) {
       return next.handle(req);
     }
-
     if (this.authService.isExpired) {
 
       return this.refreshToken(req, next);
@@ -36,7 +35,7 @@ export class NgxWso2HttpInterceptor implements HttpInterceptor {
       },
     });
   }
-  private handleError(error) { 
+  private handleError(error) {
     let errMsg: string;
     this.authService.logout();
     this.authService.redirectToLoginPage();
