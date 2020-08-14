@@ -10,11 +10,34 @@ It can be placed on a private repository if need be. Currently it is available f
 
 ## Usage
 
+### Environment.ts Structure and settings
+
+ 
+~~~~
+
+export const environment = {
+  production: false,
+  wso2: {
+    authorizeUri: '', //WSO2 Authorize URL to get the Access Token
+    clientId: '', //Client Id taken from WSO2 Store
+    redirectUri: '', // Login Route path configured on WSO2 Store
+    storageName: '', // Name in which the access token and related information will be store in the Local Storage for further API calls
+    clientSecret: '',  //Client Id taken from WSO2 Store
+    tokenUri: '',  //WSO2 Token Endpoint (beware that this endpoint must be CORS enabled)
+    userDataUri: '', //Endpoint in which NGX-Wso2-Authentication will find more information about the logged user to make authorization in the client or to have further information about the user.
+    autoRedirectToOrigin: true // if enabled, all pages guarded by NgxWso2AuthenticationGuard  gain the power of being redirected to after login
+  }
+};
+
+
+~~~~
+
+
 ### Access Denied Screen
 
 The route `access-denied` needs to exist on yout angular application, and the component `AccessDeniedComponent` also needs to be referenced by your application on the routes file (```app-routing.module.ts```):
 
-```
+~~~~
 ...
 import { LoginComponent, NgxWso2AuthenticationGuard, AccessDeniedComponent } from 'ngx-wso2-authentication';
 ...
@@ -26,7 +49,7 @@ const routes: Routes = [
 
 ...
 
-```
+~~~~
 
 ### Auto Redirect After Login
 
@@ -62,11 +85,27 @@ From version 0.0.8 and on, if you place an item on Local Storage, named ```redir
 
 ~~~~
 
-* And then use this guard on the pages
+* And then use this guard on the pages by the use of the router module:
+
+~~~~
+
+
+  { path: '', component: HomeComponent , canActivate:[DefaultGuard]},
+
+~~~~
 
 3. Combine the `NgxWso2AuthenticationGuard` with the setting `wso2.autoRedirectToOrigin: true` on your environment file. This will make all the pages guarded by  `NgxWso2AuthenticationGuard` to automatically manage the Local Storage item ```redirectPageAfterLogin```
 
+
+
 4. You can also develop your own guard and combine it with the `NgxWso2AuthenticationGuard` to enable this feature to both restricted and non-restricted pages.
+~~~~
+
+  { path: 'store', component: StoreComponent, canActivate:[DefaultGuard] },
+  { path: 'todomodule' , loadChildren: () => TodoModule, canActivate: [DefaultGuard,NgxWso2AuthenticationGuard] },
+  
+~~~~
+
 
 ### Import the login component
 
@@ -97,6 +136,38 @@ ng build NgxWso2Authentication
 ```
 ng build NgxWso2Authentication --watch
 ```
+
+
+### Publishing the component on npmjs repository
+
+1. Change version of the component (via  projects\ngx-wso2-authetication\package.json)
+2. build the component for publishing:
+
+
+```
+ng build NgxWso2Authentication 
+```
+
+3. go to **ngx-wso2-authentication\dist** folder **(VERY IMPORTANT, otherwise you will publish the source code!!)** 
+
+4. login into your npm account:
+
+
+```
+npm login
+
+... PROVIDE YOUR CREDENTIALS - the token will be stored on your local .npmrc file, possibly on your windows user folder.
+```
+
+5. Publish your component:
+
+```
+npm publish
+```
+
+3. If you have permission to do so, the new version should be in http://npmjs.com/package/ngx-wso2-authentication
+
+
 
 ## Development server
 
