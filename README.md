@@ -111,7 +111,13 @@ From version 0.0.8 and on, if you place an item on Local Storage, named ```redir
 
 It is good to import the login component to your application, because it verifies if the authCode came from WSO2 and calls the ```login``` method that will ultimately call the needed WSO2 endpoints.
 
-### Has Role (ngxHasRole)
+### Authorization and user info 
+
+#### userDataUri
+
+ You can find user information via `this.authService.user` (`NgxWso2AuthenticationService` must have been imported) if the configuration setting ```wso2.userDataUri``` is filled in with a proper URL, able to receive WSO2's JWT token on the backend.
+
+#### Has Role (ngxHasRole)
 
 The component allows certain visual components to be displayed in case the specified user has the needed roles to see it. It is needed to use single quotes ```'``` around the role name. **And only one role is accepted**, for example:
 
@@ -121,7 +127,7 @@ The component allows certain visual components to be displayed in case the speci
 </div>
 ```
 
-
+This will work the configuration setting ```wso2.userDataUri``` is filled in with a proper URL, able to receive WSO2's JWT token on the backend.
 
 ## Technical Info about the Component
 
@@ -156,7 +162,7 @@ ng build NgxWso2Authentication
 ```
 npm login
 
-... PROVIDE YOUR CREDENTIALS - the token will be stored on your local .npmrc file, possibly on your windows user folder.
+... PROVIDE YOUR CREDENTIALS - the token will be stored on your local .npmrc file, possibly on your windows user folder (e.g ```C:\Users\YOURUSERNAME```).
 ```
 
 5. Publish your component:
