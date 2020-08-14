@@ -28,9 +28,49 @@ const routes: Routes = [
 
 ```
 
+### Auto Redirect After Login
+
+From version 0.0.8 and on, if you place an item on Local Storage, named ```redirectPageAfterLogin``` after login is performed it will redirect to the informed page on this storage item and then delete it from the storage. The ways you can use this feature are:
+
+1. On Init of your page, store the page's name on the storage:
+ 
+~~~~
+
+    localStorage.setItem('redirectPageAfterLogin', state.url);
+
+~~~~
+
+2. Implement a guard on your pages, such as the following **EXCEPT FOR THE LOGIN PAGE**
+
+~~~~
+  import { Injectable } from '@angular/core';
+  import { CanActivate, ActivatedRouteSnapshot, RouterStateSnapshot } from '@angular/router';
+  import { Observable } from 'rxjs';
+
+  @Injectable({
+    providedIn: 'root'
+  })
+  export class DefaultGuard implements CanActivate {
+    canActivate(
+      next: ActivatedRouteSnapshot,
+      state: RouterStateSnapshot): Observable<boolean> | Promise<boolean> | boolean {
+
+      localStorage.setItem('redirectPageAfterLogin', state.url);
+      return true;
+    }
+  }
+
+~~~~
+
+* And then use this guard on the pages
+
+3. Combine the `NgxWso2AuthenticationGuard` with the setting `wso2.autoRedirectToOrigin: true` on your environment file. This will make all the pages guarded by  `NgxWso2AuthenticationGuard` to automatically manage the Local Storage item ```redirectPageAfterLogin```
+
+4. You can also develop your own guard and combine it with the `NgxWso2AuthenticationGuard` to enable this feature to both restricted and non-restricted pages.
+
 ### Import the login component
 
-It is good to import the login component to your application, because it verifies if the authCode came from WSO2 and calls the ```login```nethod that will ultimately call the needed WSO2 endpoints
+It is good to import the login component to your application, because it verifies if the authCode came from WSO2 and calls the ```login``` method that will ultimately call the needed WSO2 endpoints.
 
 ### Has Role (ngxHasRole)
 
